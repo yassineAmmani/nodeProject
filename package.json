@@ -1,0 +1,28 @@
+{
+  "name": "nodetuto---copy",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index",
+    "dev": "nodemon index"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yassineAmmani/nodeProject.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yassineAmmani/nodeProject/issues"
+  },
+  "homepage": "https://github.com/yassineAmmani/nodeProject#readme",
+  "dependencies": {
+    "date-fns": "^2.29.1",
+    "excel4node": "^1.8.0",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.19"
+  }
+}

@@ -1,96 +1,54 @@
-var fs = require('fs');
-const fsPromises = require('fs').promises;
-const path = require('path')
+const fs = require('fs');
+const readline = require('readline');
+const { isNullOrUndefined } = require('util');
 
-// const fileOps = async () => {
-//     try {
-//         const data = fs.readFile(path.join(__dirname,'files','starter.txt'),'utf8');
-//         console.log(data);
-//     }catch(err){
-//         console.error(err);
-//     }
-// }
-// fileOps();
-let func1 = () =>{
-    return new Promise((resolve)=>{
-        resolve('test101')
+const excel = require("excel4node");
+
+const workbook = new excel.Workbook();
+
+const style = workbook.createStyle({
+    font: { color: "#0101FF", size: 11 }
+});
+
+const worksheet = workbook.addWorksheet("Sheet 1");
+
+function  nline(line){
+    fs.appendFile('log.txt', `${line} \n`, function (err) {
+      if (err) {
+        // append failed
+      } else {
+        // done
+      }
     })
-}
-let func2 = () =>{
-    return new Promise((resolve)=>{
-        resolve('test101')
-    })
-}
-let num=1
-
-const az = async ()=>{
-    let text = 'hu'
-    try{
-                text = await func()
-                
-    }catch(azerr){
-         text = azerr;
     }
-    return text
-}
-az().then(a => console.log(a) )
+async function processLineByLine() {
+  const fileStream = fs.createReadStream('v212.txt');
 
-var alfa  = new Promise((a,b)=>{
-    let r =3
-    if(r==2){
-        a('succcess')
-    }else{
-        b('failed')
+  const rl = readline.createInterface({
+    input: fileStream,
+    crlfDelay: Infinity
+  });
+
+var T=[1,2,3,4,5,6,7,8,9,10]
+console.log(T)
+  for await (const line of rl) {
+    if(! line.match(/Username|Email Address|First Name|Last Name|Date de naissance|Sexe|TÃ©lÃ©phone|Banque|RIB Complet (24 Chiffres)|Login/g)){
+        console.log(`Line from file: ${line}`);
+        await nline(line)
     }
-})
-
-alfa.then((message)=> {
-    console.log(message)
-}).catch((message)=> {
-    console.log(message)
-})
-
-
-function alta(){
-    return fsPromises.readFile(path.join(__dirname,'files','starter.txt'))
-}
-alta().then((result)=> {
-console.log(""+result);
-
-})
-.catch(function(error) {
-console.log(error);
-})
-
-
-// let  beta = fs.readFile(path.join(__dirname,'files','starter.txt'),'utf8',(err,data)=>{
     
-//     console.log(data);
-//     if(err) throw err;
-// })
+  }
+}
 
-// beta().then((data) => {
-//     console.log(data)
-// })
+processLineByLine();
 
 
-// console.log('hello world');
 
-// fs.writeFile(path.join(__dirname,'files','reply.txt'),'nice to meet you',(err)=>{
-//     if(err) throw err;
-//     console.log('Write complete');
-//     fs.appendFile(path.join(__dirname,'files','reply.txt'),'\n\n mr yassin',(err)=>{
-//         if(err) throw err;
-//         console.log('Append complete');
+const arrayToWrite = Array.from({length: 10}, (v, k) => [`Row ${k+2}, Col 1`,`Row ${k+1}, Col 2`]);
+arrayToWrite.forEach((row, rowIndex) => {
+    row.forEach((entry, colIndex) => { 
+        worksheet.cell(rowIndex + 1, colIndex + 1).string(entry).style(style); 
+    })
+})
 
-//         fs.rename(path.join(__dirname,'files','reply.txt'),path.join(__dirname,'files','newReply.txt'),(err)=>{
-//             if(err) throw err;
-//             console.log('Rename complete');
-//         })
-//     })
-// })
-
-// process.on('uncaughtException', err=>{
-//     console.error(`there was an uncought error : ${err}`);
-//     process.exit(1);
-// })
+workbook.write("text.xlsx");
