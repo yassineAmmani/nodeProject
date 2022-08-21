@@ -4,8 +4,6 @@ const { finished } = require('stream');
 const { isNullOrUndefined } = require('util');
 
 path = ["files/v212.txt","files/v32.txt","files/v574.txt"]
-var js=  `\{`
-var A = new Array
 var i = 0
 var j=0
 var obj
@@ -37,7 +35,6 @@ function  njson(line){
     
 async function processLineByLine(path) {
   const fileStream = fs.createReadStream(path);
-
   const rl = readline.createInterface({
     input: fileStream,
     crlfDelay: Infinity
@@ -45,14 +42,12 @@ async function processLineByLine(path) {
  
   let v =0
   let w =0
-  let temp=""
   console.log(path)
   for await (const line of rl) {
     
     if(! line.match(/Username|Email Address|First Name|Last Name|Date de naissance|Sexe|TÃ©lÃ©phone|Banque|RIB Complet \(24 Chiffres\)|Login/g)){
-        js = js + ` \"${line}\"`
         if (line != "*") {
-            console.log(C[w],w,B[w],v)
+            console.log(C[w],w+1,B[w],v)
             B[w].push(line)
             w=w+1
         }else{
@@ -64,18 +59,17 @@ async function processLineByLine(path) {
        if(line == C[v]){
           
         }else{
-          // console.log(C[v])
-          console.log(w,"---",v)
+          console.log(w+1,"---",v)
           B[w].push("nooo")
           w=w+1
         }
+        console.log("-------",w,v)
         v=v+1
     }
   } 
 }
 
 function first(callback) {
-  
       if(j<3 ){
           callback(path[j]);
           j= j+1
@@ -83,7 +77,6 @@ function first(callback) {
       else{
         return
       }
-  
 };
 
 first(processLineByLine)
@@ -100,7 +93,7 @@ first(processLineByLine)
  setTimeout(() => {
    
     njson(obj)
-}, 1801);
+}, 1001);
 
 
 // setTimeout(() => {
