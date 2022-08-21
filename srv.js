@@ -1,8 +1,9 @@
 const fs = require('fs');
 const readline = require('readline');
+const { finished } = require('stream');
 const { isNullOrUndefined } = require('util');
 
-path = ["files/v212.txt","files/v32.txt"]
+path = ["files/v212.txt","files/v32.txt","files/v574.txt"]
 var js=  `\{`
 var A = new Array
 var i = 0
@@ -10,7 +11,7 @@ var j=0
 var obj
 obj = {Username: [ ], "Email Address": [], "First Name": [],"Last Name": [],"Date de naissance": [],Sexe: [],Phone: [], Banque: [], RIB: [],Login: [] };
 var B = [obj.Username,obj['Email Address'],obj['First Name'],obj['Last Name'],obj['Date de naissance'],obj.Sexe,obj.Phone,obj.Banque,obj.RIB,obj.Login]
-
+var C = ["Username","Email Address","First Name","Last Name","Date de naissance","Sexe","TÃ©lÃ©phone","Banque","RIB Complet (24 Chiffres)","Login"]
 
 
 
@@ -42,40 +43,64 @@ async function processLineByLine(path) {
     crlfDelay: Infinity
   });
  
- 
+  let v =0
+  let w =0
+  let temp=""
+  console.log(path)
   for await (const line of rl) {
+    
     if(! line.match(/Username|Email Address|First Name|Last Name|Date de naissance|Sexe|TÃ©lÃ©phone|Banque|RIB Complet \(24 Chiffres\)|Login/g)){
-        console.log(`Line from file: ${line}`);
         js = js + ` \"${line}\"`
         if (line != "*") {
-          A[i] = line
-          console.log(B[i])
-          
-          B[i].push(line)
-          i = i+1
+            console.log(C[w],w,B[w],v)
+            B[w].push(line)
+            w=w+1
         }else{
+          first(processLineByLine)
           return
         }
         await nline(line)
-        setTimeout(() => {
-   
-          console.log()
-      }, 801);
+    }else{
+       if(line == C[v]){
+          
+        }else{
+          // console.log(C[v])
+          console.log(w,"---",v)
+          B[w].push("nooo")
+          w=w+1
+        }
+        v=v+1
     }
-  }
+  } 
 }
 
+function first(callback) {
+  
+      if(j<3 ){
+          callback(path[j]);
+          j= j+1
+      }
+      else{
+        return
+      }
+  
+};
 
-    processLineByLine(path[0]);
-    setTimeout(() => {
-      i =0
-      processLineByLine(path[1]);
-  }, 401);
+first(processLineByLine)
+
+
+    // processLineByLine(path[0]).then(console.log("is finishe"))
+    // console.log("is finishe")
+
+  //   setTimeout(() => {
+  //     i =0
+  //     processLineByLine(path[1]);
+  // }, 201);
 
  setTimeout(() => {
    
     njson(obj)
-}, 801);
+}, 1801);
 
 
 // setTimeout(() => {
