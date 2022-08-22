@@ -61,9 +61,10 @@ async function processLineByLine(path) {
         }else{
           console.log(w+1,"---",v)
           B[w].push("nooo")
+          
           w=w+1
         }
-        console.log("-------",w, v)
+        console.log("-------",w,v)
         v=v+1
     }
   } 
